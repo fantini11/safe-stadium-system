@@ -2,7 +2,7 @@
 
 O projeto tem o objetivo de integrar recursos de segurança em um só lugar, garantindo que estádios e partidas de futebol possam voltar a ser ambientes seguros, nos quais as pessoas podem aproveitar o momento sem procupação.
 
-Projeto acadêmico desenvolvido em equipe na PUC Minas durante a disciplina de TI, com foco em integração entre backend, interface web e banco de dados.
+Projeto acadêmico desenvolvido em equipe na PUC Minas durante a disciplina de TI 2, com foco em integração entre backend, interface web e banco de dados.
 
 ## Tecnologias utilizadas
 
