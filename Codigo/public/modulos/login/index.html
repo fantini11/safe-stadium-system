@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desenvolvimento de Interfaces Web | Painel Administrativo</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="../../assets/js/api-config.js"></script>
+    <script src="../../assets/js/login.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- LÓGICA DE AUTENTICAÇÃO PARA PÁGINA PRIVADA ---
+            const userInfo = document.getElementById('userInfo');
+            const btnLogout = document.getElementById('btnLogout');
+            const btnLogin = document.getElementById('btnLogin');
+            const usuarioCorrente = JSON.parse(sessionStorage.getItem('usuarioCorrente'));
+
+            if (usuarioCorrente && usuarioCorrente.nome) {
+                // Usuário está logado
+                userInfo.textContent = `Bem-vindo, ${usuarioCorrente.nome}`;
+                btnLogout.style.display = 'inline-flex';
+                btnLogin.style.display = 'none';
+
+                // Usa a função logoutUser() do arquivo login.js
+                btnLogout.addEventListener('click', logoutUser);
+
+                // A listagem de usuários foi removida por questões de privacidade.
+
+            } else {
+                // Usuário NÃO está logado, redireciona para o login
+                alert('Acesso restrito. Por favor, faça o login para acessar o painel administrativo.');
+                window.location.href = '/modulos/login/login.html';
+            }
+        });
+    </script>
+
+</head>
+
+<body>
+    <header>
+        <div class="barra-info">
+            <div class="logo">
+                <img src="../../assets/images/stadium-banner.jpg" alt="SafeStadium Logo">
+            </div>
+            <div class="site-title">
+                <h1 onclick="location.href='../../index.html'">SafeStadium</h1>
+            </div>
+            <nav class="menu">
+                <ul>
+                    <li><a href="/modulos/jogos e eventos/index.html">Jogos e Eventos</a></li>
+                    <li><a href="/modulos/cadastro-usuario/index.html">Cadastro de Torcedor</a></li>
+                    <li><a href="/modulos/fluxo/fluxo.html">Entrada e Saída</a></li>
+                    <!-- Link para Reconhecimento Facial removido -->
+                    <li><a href="/modulos/denuncia/index.html">Denúncia</a></li>
+                    <li><a href="/modulos/login/index.html">Área Administrativa</a></li>
+                    <li><a href="/about.html">Sobre o Projeto</a></li>
+                </ul>
+            </nav>
+            <div class="dados-usuario">
+                <span id="userInfo"></span>
+                <button id="btnLogout" class="btn-logout" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+                <a href="/modulos/login/login.html" id="btnLogin" class="btn-login" style="display: none;">
+                    <i class="fas fa-sign-in-alt"></i> Cadastro / Login
+                </a>
+            </div>
+        </div>
+        <div class="banner">
+            <div class="banner-overlay">
+                <h1>Painel Administrativo</h1>
+                <p>Gestão de Usuários e Funcionalidades</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mt-5">
+        <!-- Listagem de usuários removida por questão de privacidade -->
+        <div class="row mt-5">
+            <div class="col-md-8">
+                <h2>Adicionar Evento</h2>
+                <form id="form-evento" class="p-3 bg-light rounded">
+                    <div class="mb-3">
+                        <label for="evento-nome" class="form-label">Nome do Evento</label>
+                        <input type="text" id="evento-nome" class="form-control" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="evento-data" class="form-label">Data</label>
+                            <input type="date" id="evento-data" class="form-control">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="evento-horario" class="form-label">Horário</label>
+                            <input type="time" id="evento-horario" class="form-control">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="evento-local" class="form-label">Local</label>
+                            <input type="text" id="evento-local" class="form-control">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="evento-descricao" class="form-label">Descrição</label>
+                        <textarea id="evento-descricao" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Adicionar Evento</button>
+                        <button type="button" id="btn-reset-evento" class="btn btn-secondary">Limpar</button>
+                    </div>
+                </form>
+                <!-- Debug output (temporário) -->
+                <div id="debug-area" style="margin-top:1rem; display:none;">
+                    <h5>Debug API</h5>
+                    <pre id="debug-api-events" style="background:#111;color:#0f0;padding:0.75rem;border-radius:4px;max-height:200px;overflow:auto;"></pre>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script>
+        // Handler do formulário de criação de evento
+        document.addEventListener('DOMContentLoaded', function () {
+            const formEvento = document.getElementById('form-evento');
+            if (!formEvento) return;
+
+            const API_EVENTOS = window.API_CONFIG.getUrl(window.API_CONFIG.ENDPOINTS.EVENTOS);
+
+            formEvento.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const nome = document.getElementById('evento-nome').value.trim();
+                const data = document.getElementById('evento-data').value; // yyyy-mm-dd
+                const horario = document.getElementById('evento-horario').value; // HH:MM
+                const local = document.getElementById('evento-local').value.trim();
+                const descricao = document.getElementById('evento-descricao').value.trim();
+
+                if (!nome) {
+                    alert('Preencha o nome do evento.');
+                    return;
+                }
+
+                // Formata horário para HH:MM:SS esperado pelo backend
+                let horarioFull = '';
+                if (horario) {
+                    horarioFull = horario.length === 5 ? horario + ':00' : horario;
+                }
+
+                const payload = {
+                    nome: nome,
+                    data: data || null,
+                    horario: horarioFull || null,
+                    local: local || null,
+                    descricao: descricao || null
+                };
+
+                try {
+                    // Mostrar debug na página e console
+                    console.info('POST ->', API_EVENTOS);
+                    console.info('Payload ->', payload);
+                    const dbg = document.getElementById('debug-api-events');
+                    const dbgArea = document.getElementById('debug-area');
+                    if (dbg && dbgArea) {
+                        dbgArea.style.display = 'block';
+                        dbg.textContent = `POST ${API_EVENTOS}\n\nPayload:\n${JSON.stringify(payload, null, 2)}\n\nEnviando...`;
+                    }
+
+                    const resp = await fetch(API_EVENTOS, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const respText = await resp.text();
+                    if (!resp.ok) {
+                        console.error('Resposta não OK:', resp.status, respText);
+                        if (dbg) dbg.textContent = `POST ${API_EVENTOS}\n\nPayload:\n${JSON.stringify(payload, null, 2)}\n\nResponse [${resp.status}]:\n${respText}`;
+                        throw new Error(`Status ${resp.status}: ${respText}`);
+                    }
+
+                    // tenta parsear JSON de resposta
+                    let created = null;
+                    try { created = JSON.parse(respText); } catch(e) { created = respText; }
+                    console.info('Evento criado, resposta:', created);
+                    if (dbg) dbg.textContent = `Evento criado com sucesso:\n${JSON.stringify(created, null, 2)}`;
+                    alert('✅ Evento criado com sucesso!');
+                    formEvento.reset();
+                } catch (err) {
+                    console.error('Erro ao criar evento:', err);
+                    alert('Erro ao criar evento. Veja console para detalhes.');
+                }
+            });
+
+            document.getElementById('btn-reset-evento').addEventListener('click', function () {
+                formEvento.reset();
+            });
+        });
+    </script>
+</body>
+
+<footer class="site-footer">
+        <div class="container footer-inner">
+            <p>&copy; 2025 SafeStadium. Todos os direitos reservados. Criadores: Thales Duque Câmara, Tiago Delgado Rocha, Gabriel Fantini, Victor Lage</p>
+        </div>
+    </footer>
+
+</html>

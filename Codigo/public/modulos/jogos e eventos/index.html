@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeStadium - Jogos e Eventos</title>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="barra-info">
+            <div class="logo">
+                <img src="../../assets/images/stadium-banner.jpg" alt="SafeStadium Logo">
+            </div>
+            <div class="site-title">
+                <h1 onclick="location.href='../../index.html'">SafeStadium</h1>
+            </div>
+            <nav class="menu">
+                <ul>
+                    <li><a href="/modulos/jogos e eventos/index.html">Jogos e Eventos</a></li>
+                    <li><a href="/modulos/cadastro-usuario/index.html">Cadastro de Torcedor</a></li>
+                    <li><a href="/modulos/fluxo/fluxo.html">Entrada e Saída</a></li>
+                    <!-- Link para Reconhecimento Facial removido -->
+                    <li><a href="/modulos/denuncia/index.html">Denúncia</a></li>
+                    <li><a href="/modulos/login/index.html">Área Administrativa</a></li>
+                    <li><a href="/about.html">Sobre o Projeto</a></li>
+                </ul>
+            </nav>
+            <div class="dados-usuario">
+                <span id="userInfo"></span>
+                <button id="btnLogout" class="btn-logout" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+                <a href="/modulos/login/login.html" id="btnLogin" class="btn-login">
+                    <i class="fas fa-sign-in-alt"></i> Cadastro / Login
+                </a>
+            </div>
+        </div>
+        <div class="banner">
+            <div class="banner-overlay">
+                <h1><i class="fas fa-calendar-alt"></i> Próximos Jogos e Eventos</h1>
+                <p>Confira a programação do estádio</p>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section id="eventos-lista" class="feature-section">
+            <!-- Eventos serão carregados aqui pelo JavaScript -->
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p>&copy; 2025 SafeStadium. Todos os direitos reservados. Criadores: Thales Duque Câmara, Tiago Delgado Rocha, Gabriel Fantini, Victor Lage</p>
+        </div>
+    </footer>
+    
+    <script src="../../../assets/js/api-config.js"></script>
+    <script src="./script.js"></script>
+</body>
+</html>

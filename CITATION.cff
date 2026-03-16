@@ -1,0 +1,27 @@
+cff-version: 1.0.1
+message: Please cite this software using these metadata.
+title: 
+authors:
+  - family-names: Delgado Rocha
+    given-names: Tiago 
+  - family-names: Marques Fantini
+    given-names: Gabriel
+  - family-names: Marcolino Moreno Lage
+    given-names: Victor
+  - family-names: Duque Câmara
+    given-names: Thales
+  - name-suffix: Professor
+    affiliation: PUC Minas
+    family-names: Mara Freitas Diniz
+    given-names: Luciana
+  - name-suffix: Professor
+    affiliation: PUC Minas
+    family-names: Jerônimo de Almeida 
+    given-names: Sandro
+keywords:
+  - 
+  - 
+repository-code: 
+license: CC-BY-4.0
+version: 1.0.0
+date-released: 2022-07-14

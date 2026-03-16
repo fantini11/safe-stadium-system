@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre o SafeStadium</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="./assets/js/login.js"></script>
+</head>
+<body>
+    <header>
+        <div class="barra-info">
+            <div class="logo">
+                <img src="./assets/images/stadium-banner.jpg" alt="SafeStadium Logo">
+            </div>
+            <div class="site-title">
+                <h1 onclick="location.href='index.html'">SafeStadium</h1>
+            </div>
+            <nav class="menu">
+                <ul>
+                    <li><a href="/modulos/jogos e eventos/index.html">Jogos e Eventos</a></li>
+                    <li><a href="/modulos/cadastro-usuario/index.html">Cadastro de Torcedor</a></li>
+                    <li><a href="/modulos/fluxo/fluxo.html">Entrada e Saída</a></li>
+                    <!-- Link para Reconhecimento Facial removido -->
+                    <li><a href="/modulos/denuncia/index.html">Denúncia</a></li>
+                    <li><a href="/modulos/login/index.html">Área Administrativa</a></li>
+                    <li><a href="/about.html">Sobre o Projeto</a></li>
+                </ul>
+            </nav>
+            <div class="dados-usuario">
+                <span id="userInfo"></span>
+                <button id="btnLogout" class="btn-logout" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+                <a href="/modulos/login/login.html" id="btnLogin" class="btn-login" style="display: none;">
+                    <i class="fas fa-sign-in-alt"></i> Cadastro / Login
+                </a>
+            </div>
+        </div>
+        <div class="banner">
+            <div class="banner-overlay">
+                <h1>Sobre o Projeto SafeStadium</h1>
+                <p>Uma iniciativa para tornar os estádios lugares mais seguros para todos</p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="about-content">
+            
+            
+            <h2>Sobre o Projeto</h2>
+            <p>O SafeStadium foi desenvolvido como parte de um trabalho interdisciplinar de estudantes de Ciência da Computação na Puc Minas com o objetivo de combater a violência nos estádios de futebol através da tecnologia.</p>
+            
+            <h3>Funcionalidades Principais:</h3>
+            <ul>
+                <li>Alerta rápido em caso de tumultos</li>
+                <li>Controle de torcedores reincidentes</li>
+                <li>Monitoramento de entrada e saída</li>
+                <li>Reconhecimento facial de torcedores</li>
+            </ul>
+
+            <h4>Desenvolvedores:</h4>
+            <ul>
+                <li>Thales Duque Câmara</li>
+                <li>Tiago Delgado Rocha</li>
+                <li>Gabriel Fantini</li>
+                <li>Victor Lage</li>
+            </ul>
+        </section>
+    </main>
+    
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p>&copy; 2025 SafeStadium. Todos os direitos reservados. Criadores: Thales Duque Câmara, Tiago Delgado Rocha, Gabriel Fantini, Victor Lage</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userInfo = document.getElementById('userInfo');
+            const btnLogout = document.getElementById('btnLogout');
+            const btnLogin = document.getElementById('btnLogin');
+            const usuarioCorrente = JSON.parse(sessionStorage.getItem('usuarioCorrente'));
+
+            if (usuarioCorrente && usuarioCorrente.nome) {
+                // Usuário está logado
+                userInfo.textContent = `Bem-vindo, ${usuarioCorrente.nome}`;
+                btnLogout.style.display = 'inline-flex';
+                btnLogin.style.display = 'none';
+
+                btnLogout.addEventListener('click', function() {
+                    sessionStorage.removeItem('usuarioCorrente');
+                    window.location.reload(); // Recarrega a página para atualizar o header
+                });
+            } else {
+                // Usuário NÃO está logado
+                userInfo.textContent = '';
+                btnLogout.style.display = 'none';
+                btnLogin.style.display = 'inline-flex'; // Mostra o botão de Cadastro / Login
+            }
+        });
+    </script>
+</body>
+</html>

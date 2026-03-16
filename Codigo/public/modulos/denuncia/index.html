@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeStadium - Denúncia</title>
+    <link rel="stylesheet" href="../../../assets/css/incidentes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="/assets/js/api-config.js"></script>
+    <script src="/assets/js/login.js"></script>
+    <script src="denuncia.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="barra-info">
+            <div class="logo">
+                <img src="../../assets/images/stadium-banner.jpg" alt="SafeStadium Logo">
+            </div>
+            <div class="site-title">
+                <h1 onclick="location.href='../../index.html'">SafeStadium</h1>
+            </div>
+            <nav class="menu">
+                <ul>
+                    <li><a href="/modulos/jogos e eventos/index.html">Jogos e Eventos</a></li>
+                    <li><a href="/modulos/cadastro-usuario/index.html">Cadastro de Torcedor</a></li>
+                    <li><a href="/modulos/fluxo/fluxo.html">Entrada e Saída</a></li>
+                    <!-- Link para Reconhecimento Facial removido -->
+                    <li><a href="/modulos/denuncia/index.html">Denúncia</a></li>
+                    <li><a href="/modulos/login/index.html">Área Administrativa</a></li>
+                    <li><a href="/about.html">Sobre o Projeto</a></li>
+                </ul>
+            </nav>
+            <div class="dados-usuario">
+                <span id="userInfo"></span>
+                <button id="btnLogout" class="btn-logout" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+                <a href="/modulos/login/login.html" id="btnLogin" class="btn-login" style="display: none;">
+                    <i class="fas fa-sign-in-alt"></i> Cadastro / Login
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="detalhes-container">
+            <div class="detalhes-header">
+                <h2>Denuncie um Incidente</h2>
+                <p class="subtitulo">Preencha o formulário com as informações que julgar relevantes. Apenas envie — as denúncias serão registradas e poderão ser consultadas pela equipe administrativa.</p>
+            </div>
+
+            <form id="form-denuncia">
+                <div class="detalhes-grid">
+                    <div class="detalhes-item">
+                        <label for="data" class="detalhes-label">Data</label>
+                        <input type="date" id="data" name="data" required class="detalhes-valor">
+                    </div>
+
+                    <div class="detalhes-item">
+                        <label for="horario" class="detalhes-label">Horário</label>
+                        <input type="time" id="horario" name="horario" class="detalhes-valor">
+                    </div>
+
+                    <div class="detalhes-item">
+                        <label for="setor" class="detalhes-label">Setor / Local</label>
+                        <input type="text" id="setor" name="setor" placeholder="Ex: Setor Sul, Portão 1, Praça de Alimentação" class="detalhes-valor">
+                    </div>
+
+                    <div class="detalhes-item">
+                        <label for="tipo" class="detalhes-label">Tipo</label>
+                        <select id="tipo" name="tipo" class="detalhes-valor">
+                            <option value="">Selecione um tipo (opcional)</option>
+                            <option value="Briga">Briga</option>
+                            <option value="Invasão">Invasão</option>
+                            <option value="Furto">Furto</option>
+                            <option value="Dano ao Patrimônio">Dano ao Patrimônio</option>
+                            <option value="Assédio">Assédio</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+
+                    <div class="detalhes-item">
+                        <label for="nivel" class="detalhes-label">Nível</label>
+                        <select id="nivel" name="nivel" class="detalhes-valor">
+                            <option value="">Selecione um nível (opcional)</option>
+                            <option value="Alto">Alto</option>
+                            <option value="Médio">Médio</option>
+                            <option value="Baixo">Baixo</option>
+                        </select>
+                    </div>
+
+                    <div class="detalhes-item">
+                        <label for="policiamento" class="detalhes-label">Policiamento</label>
+                        <input type="checkbox" id="policiamento" name="policiamento" class="detalhes-valor"> Há policiais na área?
+                    </div>
+
+                    <div class="detalhes-item">
+                        <label for="resolvido" class="detalhes-label">Resolvido</label>
+                        <input type="checkbox" id="resolvido" name="resolvido" class="detalhes-valor"> O incidente foi resolvido?
+                    </div>
+
+                    <div class="detalhes-item full-width">
+                        <label for="descricao" class="detalhes-label">Descrição</label>
+                        <textarea id="descricao" name="descricao" rows="6" required class="detalhes-valor" style="width:100%;"></textarea>
+                    </div>
+
+                    <div class="detalhes-item full-width" style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6;">
+                        <label for="fotoSuspeito" class="detalhes-label" style="color: #dc3545; font-weight: bold;">
+                            <i class="fas fa-camera"></i> Identificação de Suspeito (IA)
+                        </label>
+                        <p style="font-size: 0.9em; color: #6c757d; margin-bottom: 10px;">
+                            Envie uma foto do rosto do suspeito para verificar se ele já possui cadastro no sistema.
+                        </p>
+                        <input type="file" id="fotoSuspeito" accept="image/*" class="detalhes-valor" style="width: 100%;">
+                        
+                        <button type="button" id="btn-identificar" class="btn-filtrar" style="margin-top: 10px; background-color: #ffc107; color: #000;">
+                            <i class="fas fa-search"></i> Identificar Suspeito com IA
+                        </button>
+
+                        <div id="resultadoIA" style="display: none; margin-top: 15px; padding: 10px; border-radius: 5px;">
+                            <span id="textoResultado"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="botoes-acoes">
+                    <button type="submit" class="btn-filtrar">
+                        <i class="fas fa-exclamation-triangle"></i> Enviar Denúncia
+                    </button>
+                    <button type="button" id="btn-cancelar" class="btn-voltar">
+                        <i class="fas fa-arrow-left"></i> Voltar
+                    </button>
+                </div>
+            </form>
+
+            <div id="mensagem" style="margin-top:16px; display:none;"></div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p>&copy; 2025 SafeStadium. Todos os direitos reservados. Criadores: Thales Duque Câmara, Tiago Delgado Rocha, Gabriel Fantini, Victor Lage</p>
+        </div>
+    </footer>
+    
+</body>
+</html>

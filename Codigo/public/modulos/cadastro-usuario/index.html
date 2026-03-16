@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Torcedor - SafeStadium</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="barra-info">
+            <div class="logo">
+                <img src="../../assets/images/stadium-banner.jpg" alt="SafeStadium Logo">
+            </div>
+            <div class="site-title">
+                <h1 onclick="location.href='../../index.html'">SafeStadium</h1>
+            </div>
+            <nav class="menu">
+                <ul>
+                    <li><a href="/modulos/jogos e eventos/index.html">Jogos e Eventos</a></li>
+                    <li><a href="/modulos/cadastro-usuario/index.html">Cadastro de Torcedor</a></li>
+                    <li><a href="/modulos/fluxo/fluxo.html">Entrada e Saída</a></li>
+                    <!-- Link para Reconhecimento Facial removido -->
+                    <li><a href="/modulos/denuncia/index.html">Denúncia</a></li>
+                    <li><a href="/modulos/login/index.html">Área Administrativa</a></li>
+                    <li><a href="/about.html">Sobre o Projeto</a></li>
+                </ul>
+            </nav>
+            <div class="dados-usuario">
+                <span id="userInfo"></span>
+                <button id="btnLogout" class="btn-logout" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+                <a href="/modulos/login/login.html" id="btnLogin" class="btn-login" style="display: none;">
+                    <i class="fas fa-sign-in-alt"></i> Cadastro / Login
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="feature-section">
+            <h2><i class="fas fa-user-plus"></i> Cadastro de Torcedor</h2>
+            <form id="form-torcedor" class="cadastro-form">
+                <div class="form-group">
+                    <label for="nome">Nome Completo:</label>
+                    <input type="text" id="nome" placeholder="Ex: João Silva Santos" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cpf">CPF:</label>
+                    <input type="text" id="cpf" placeholder="000.000.000-00" required maxlength="14">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" placeholder="joao@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefone">Telefone:</label>
+                    <input type="tel" id="telefone" placeholder="(11) 99999-9999" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="dataNascimento">Data de Nascimento:</label>
+                    <input type="date" id="dataNascimento" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="clubeCoracao">Clube do Coração:</label>
+                    <input type="text" id="clubeCoracao" placeholder="Ex: Atlético-MG">
+                </div>
+
+                <div class="form-group">
+                    <label for="foto">Foto do Torcedor:</label>
+                    <input type="file" id="foto" accept="image/*">
+                    <small>Para reconhecimento facial futuro</small>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-save"></i> Cadastrar Torcedor
+                </button>
+            </form>
+        </section>
+
+        <section class="feature-section">
+            <h2><i class="fas fa-users"></i> Torcedores Cadastrados</h2>
+            <div class="search-container">
+                <input type="text" id="searchTorcedor" placeholder="Buscar por nome ou CPF...">
+            </div>
+            <div id="listaTorcedores" class="lista-container">
+                <!-- Lista será carregada dinamicamente -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p>&copy; 2025 SafeStadium. Todos os direitos reservados. Criadores: Thales Duque Câmara, Tiago Delgado Rocha, Gabriel Fantini, Victor Lage</p>
+        </div>
+    </footer>
+
+    <script src="../../assets/js/api-config.js"></script>
+    <script src="../../assets/js/login.js"></script>
+    <script>
+        const API_BASE_URL = window.API_CONFIG.BASE_URL;
+
+        const convertBase64 = (file) => {
+            return new Promise((resolve, reject) => {
+                const fileReader = new FileReader();
+                fileReader.readAsDataURL(file);
+                fileReader.onload = () => {
+                    resolve(fileReader.result);
+                };
+                fileReader.onerror = (error) => {
+                    reject(error);
+                };
+            });
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarTorcedores();
+            
+            // Máscaras para os campos
+            document.getElementById('cpf').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                e.target.value = value;
+            });
+
+            document.getElementById('telefone').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                value = value.replace(/(\d{2})(\d)/, '($1) $2');
+                value = value.replace(/(\d{5})(\d)/, '$1-$2');
+                e.target.value = value;
+            });
+
+            // Busca de torcedores
+            document.getElementById('searchTorcedor').addEventListener('input', function() {
+                carregarTorcedores(this.value);
+            });
+
+            // Submissão do formulário
+            document.getElementById('form-torcedor').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                await cadastrarTorcedor();
+            });
+        });
+
+        async function cadastrarTorcedor() {
+            const nome = document.getElementById('nome').value.trim();
+            const cpf = document.getElementById('cpf').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const telefone = document.getElementById('telefone').value.trim();
+            const dataNascimento = document.getElementById('dataNascimento').value;
+            const clubeCoracao = document.getElementById('clubeCoracao').value.trim();
+            const fotoInput = document.getElementById('foto');
+
+            if (!nome || !cpf || !email || !telefone || !dataNascimento) {
+                alert('Preencha todos os campos obrigatórios.');
+                return;
+            }
+
+            let fotoBase64 = null;
+            if (fotoInput.files.length > 0) {
+                try {
+                    fotoBase64 = await convertBase64(fotoInput.files[0]);
+                } catch (error) {
+                    console.error('Erro ao converter imagem:', error);
+                    alert('Erro ao processar a imagem selecionada.');
+                    return;
+                }
+            } else {
+                if(!confirm("Você não selecionou uma foto. O reconhecimento facial não funcionará para este usuário. Deseja continuar?")) {
+                    return;
+                }
+            }
+
+            const payload = {
+                nome,
+                cpf,
+                email,
+                telefone,
+                dataNascimento,
+                clubeCoracao,
+                foto: fotoBase64
+            };
+
+            try {
+                const response = await fetch(window.API_CONFIG.getUrl(window.API_CONFIG.ENDPOINTS.USUARIOS), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const message = await response.text();
+                    throw new Error(`Status ${response.status}: ${message}`);
+                }
+
+                alert('✅ Torcedor cadastrado com sucesso!');
+                document.getElementById('form-torcedor').reset();
+                carregarTorcedores();
+            } catch (error) {
+                console.error('Erro ao cadastrar torcedor:', error);
+                alert('❌ Erro ao cadastrar torcedor. Verifique a conexão com o backend.');
+            }
+        }
+
+        async function carregarTorcedores(filtro = '') {
+            const container = document.getElementById('listaTorcedores');
+            container.innerHTML = '<p>Carregando torcedores...</p>';
+
+            try {
+                const response = await fetch(window.API_CONFIG.getUrl(window.API_CONFIG.ENDPOINTS.USUARIOS));
+                if (!response.ok) {
+                    throw new Error(`Status ${response.status}`);
+                }
+                const torcedores = await response.json();
+
+                const filtrados = filtro
+                    ? torcedores.filter(t =>
+                        t.nome.toLowerCase().includes(filtro.toLowerCase()) ||
+                        (t.cpf || '').includes(filtro)
+                    )
+                    : torcedores;
+
+                exibirTorcedores(filtrados);
+            } catch (error) {
+                console.error('Erro ao carregar torcedores:', error);
+                container.innerHTML = '<p>Erro ao carregar lista de torcedores. Verifique se o backend está ativo.</p>';
+            }
+        }
+
+        function exibirTorcedores(torcedores) {
+            const container = document.getElementById('listaTorcedores');
+            
+            if (torcedores.length === 0) {
+                container.innerHTML = '<p>Nenhum torcedor encontrado.</p>';
+                return;
+            }
+
+            const html = torcedores.map(torcedor => `
+                <div class="torcedor-card">
+                    <div class="torcedor-info">
+                        <h3>${torcedor.nome}</h3>
+                        <p><strong>CPF:</strong> ${torcedor.cpf}</p>
+                        <p><strong>E-mail:</strong> ${torcedor.email}</p>
+                        <p><strong>Telefone:</strong> ${torcedor.telefone}</p>
+                        <p><strong>Clube:</strong> ${torcedor.clubeCoracao || 'Não informado'}</p>
+                    </div>
+                    <div class="torcedor-actions">
+                        <button onclick="excluirTorcedor(${torcedor.id})" class="btn-delete">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = html;
+        }
+
+        async function excluirTorcedor(id) {
+            if (!confirm('Tem certeza que deseja excluir este torcedor?')) return;
+
+            try {
+                const response = await fetch(`${window.API_CONFIG.getUrl(window.API_CONFIG.ENDPOINTS.USUARIOS)}/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) {
+                    const message = await response.text();
+                    throw new Error(`Status ${response.status}: ${message}`);
+                }
+
+                alert('✅ Torcedor excluído com sucesso!');
+                carregarTorcedores();
+            } catch (error) {
+                console.error('Erro ao excluir torcedor:', error);
+                alert('❌ Erro ao excluir torcedor. Verifique a conexão com o backend.');
+            }
+        }
+    </script>
+</body>
+</html>

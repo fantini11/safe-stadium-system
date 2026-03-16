@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeStadium - Sistema de Gestão de Estádios</title>
+    <link rel="stylesheet" href="./assets/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="./assets/js/api-config.js"></script>
+    <script src="./assets/js/login.js"></script>
+</head>
+<body>
+    <header>
+        <div class="barra-info">
+            <div class="logo">
+                <img src="./assets/images/stadium-banner.jpg" alt="SafeStadium Logo">
+            </div>
+            <div class="site-title">
+                <h1>SafeStadium</h1>
+            </div>
+            <div class="dados-usuario">
+                <button id="btnLogout" class="btn-logout" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+                <a href="/modulos/login/login.html" id="btnLogin" class="btn-login">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="search-container">
+            <label for="searchInput" class="search-label"><i class="fas fa-search"></i> Pesquisar Funcionalidade:</label>
+            <input type="text" id="searchInput" placeholder="Digite para filtrar (ex: mapa, incidentes, etc)...">
+        </div>
+
+        <section class="quick-links">
+            <div class="link-card" onclick="location.href='modulos/jogos e eventos/index.html'">
+                <i class="fas fa-calendar-alt"></i>
+                <h3>Jogos e Eventos</h3>
+                <p>Programação do estádio</p>
+            </div>
+            
+            <div class="link-card" onclick="location.href='modulos/cadastro-usuario/index.html'">
+                <i class="fas fa-user-plus"></i>
+                <h3>Cadastro de Torcedor</h3>
+                <p>Registre-se no sistema</p>
+            </div>
+            
+            <div class="link-card" onclick="location.href='modulos/fluxo/fluxo.html'">
+                <i class="fas fa-people-arrows"></i>
+                <h3>Entrada e Saída</h3>
+                <p>Controle de fluxo</p>
+            </div>
+            
+            <!-- Reconhecimento Facial removido do índice por decisão de privacidade/remoção de funcionalidade -->
+            
+            <div class="link-card" onclick="location.href='about.html'">
+                <i class="fas fa-info-circle"></i>
+                <h3>Sobre o Projeto</h3>
+                <p>Informações sobre o SafeStadium</p>
+            </div>
+            
+            <div class="link-card" onclick="location.href='modulos/denuncia/index.html'">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Denúncia</h3>
+                <p>Reportar um incidente</p>
+            </div>
+            
+            <div class="link-card" onclick="location.href='modulos/login/index.html'">
+                <i class="fas fa-lock"></i>
+                <h3>Área Administrativa</h3>
+                <p>Acesso restrito</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p>&copy; 2025 SafeStadium. Todos os direitos reservados. Criadores: Thales Duque Câmara, Tiago Delgado Rocha, Gabriel Fantini, Victor Lage</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- INÍCIO DA LÓGICA DE AUTENTICAÇÃO DO CABEÇALHO ---
+            const btnLogout = document.getElementById('btnLogout');
+            const btnLogin = document.getElementById('btnLogin');
+            const usuarioCorrente = JSON.parse(sessionStorage.getItem('usuarioCorrente'));
+
+            if (usuarioCorrente && usuarioCorrente.nome) {
+                // Usuário está logado: exibe botão de sair
+                btnLogout.style.display = 'inline-flex';
+                btnLogin.style.display = 'none';
+
+                btnLogout.addEventListener('click', function() {
+                    sessionStorage.removeItem('usuarioCorrente');
+                    window.location.reload(); // Recarrega a página para atualizar o header
+                });
+            } else {
+                // Usuário NÃO está logado: exibe o botão de login
+                btnLogout.style.display = 'none';
+                btnLogin.style.display = 'inline-flex';
+            }
+            // --- FIM DA LÓGICA DE AUTENTICAÇÃO ---
+            
+            // Lógica de pesquisa dos módulos
+            const searchInput = document.getElementById('searchInput');
+            const linkCards = document.querySelectorAll('.link-card');
+
+            searchInput.addEventListener('keyup', function() {
+                const searchTerm = searchInput.value.toLowerCase();
+
+                linkCards.forEach(card => {
+                    const cardText = card.textContent.toLowerCase();
+                    if (cardText.includes(searchTerm)) {
+                        card.style.display = ''; 
+                    } else {
+                        card.style.display = 'none'; 
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+{
+  "admins": [
+    {
+      "id": 1,
+      "login": "admin",
+      "senha": "123",
+      "nome": "Administrador do Sistema",
+      "email": "admin@safestadium.com"
+    },
+    {
+      "id": 2,
+      "login": "operador",
+      "senha": "123",
+      "nome": "Operador SafeStadium",
+      "email": "operador@safestadium.com"
+    }
+  ],
+  "usuarios": [
+    {
+      "id": 1,
+      "nome": "João Silva Santos",
+      "cpf": "111.222.333-44",
+      "email": "joao@email.com",
+      "telefone": "(11) 98765-4321",
+      "dataNascimento": "1990-05-15",
+      "clubeCoracao": "Atlético-MG",
+      "foto": null,
+      "cadastradoEm": "2025-09-25T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "nome": "Maria Oliveira Costa",
+      "cpf": "555.666.777-88",
+      "email": "maria@email.com",
+      "telefone": "(11) 99999-8888",
+      "dataNascimento": "1985-12-22",
+      "clubeCoracao": "Cruzeiro",
+      "foto": null,
+      "cadastradoEm": "2025-09-25T11:30:00Z"
+    },
+    {
+      "id": 3,
+      "nome": "Pedro Santos Oliveira",
+      "cpf": "999.888.777-66",
+      "email": "pedro@email.com",
+      "telefone": "(31) 97777-5555",
+      "dataNascimento": "1992-08-10",
+      "clubeCoracao": "Flamengo",
+      "foto": null,
+      "cadastradoEm": "2025-09-25T14:15:00Z"
+    }
+  ],
+  "eventos": [
+    {
+      "id": 1,
+      "nome": "Atlético-MG vs Flamengo",
+      "data": "2025-12-15",
+      "horario": "16:00",
+      "local": "Arena MRV",
+      "descricao": "Partida válida pela 15ª rodada do Campeonato Brasileiro. Clássico nacional entre duas das maiores torcidas do país."
+    },
+    {
+      "id": 2,
+      "nome": "Show Nacional - Anitta",
+      "data": "2025-12-20",
+      "horario": "20:00",
+      "local": "Arena de Shows",
+      "descricao": "Show da turnê 'Funk Generation' com participações especiais. Ingressos disponíveis na bilheteria oficial."
+    },
+    {
+      "id": 3,
+      "nome": "Cruzeiro vs América-MG",
+      "data": "2025-12-22",
+      "horario": "18:30",
+      "local": "Estádio Mineirão",
+      "descricao": "Clássico mineiro válido pelo Campeonato Estadual. Derby tradicional entre as duas maiores equipes de Minas Gerais."
+    },
+    {
+      "id": 4,
+      "nome": "Festival de Música Eletrônica",
+      "data": "2025-12-28",
+      "horario": "22:00",
+      "local": "Arena Principal",
+      "descricao": "Noite especial com os melhores DJs nacionais e internacionais. Evento para maiores de 18 anos."
+    }
+  ],
+  "movimentacoes": [
+    {
+      "id": 1,
+      "tipo": "entrada",
+      "portao": "Portão Principal",
+      "cpf": "11122233344",
+      "nome": "João Silva Santos",
+      "data": "25/09/2025",
+      "hora": "14:30",
+      "timestamp": "2025-09-25T17:30:00.000Z"
+    },
+    {
+      "id": 2,
+      "tipo": "entrada",
+      "portao": "Portão Sul",
+      "cpf": "55566677788",
+      "nome": "Maria Oliveira Costa",
+      "data": "25/09/2025",
+      "hora": "14:35",
+      "timestamp": "2025-09-25T17:35:00.000Z"
+    },
+    {
+      "id": 3,
+      "tipo": "saida",
+      "portao": "Portão Principal",
+      "cpf": "11122233344",
+      "nome": "João Silva Santos",
+      "data": "25/09/2025",
+      "hora": "18:15",
+      "timestamp": "2025-09-25T21:15:00.000Z"
+    }
+  ]
+}

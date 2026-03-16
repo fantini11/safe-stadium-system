@@ -1,0 +1,17 @@
+{
+  "name": "safestadium",
+  "version": "2.0.0",
+  "description": "SafeStadium - Sistema de Gestão de Estádios",
+  "scripts": {
+    "start": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "backend": "cd backend-java && mvn -q exec:java",
+    "frontend": "http-server public -p 3000 -o /index.html"
+  },
+  "keywords": ["safestadium", "java", "spark"],
+  "author": "Grupo 20 - TI2",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.2",
+    "http-server": "^14.1.1"
+  }
+}
